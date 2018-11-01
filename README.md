@@ -1,8 +1,8 @@
 # Asp.net Core Webapi
 
-The single purpose of this API is to provide test enpoints which are secured by various kinds of claims. To access most endpoints an access token must be provided. To retrieve such a token, you must use an authentication server. It should work out of the box if <a href="https://github.com/latsic/idServer.git">this authentication server</a> is used.
+The single purpose of this API is to provide test enpoints which are secured by various kinds of claims. To access most endpoints an access token must be provided. To retrieve such a token, you must use an authentication server. It should work out of the box if <a href="https://github.com/latsic/idServer">this authentication server</a> is used.
 
-There is also an <a href="https://github.com/IdentityServer/IdentityServer4.git">SPA</a> which uses this webapi and the mentioned authentication server.
+There is also an <a href="https://github.com/latsic/vue_oidc_client">SPA</a> which uses this webapi and the mentioned authentication server.
 
 ## Built With
 
