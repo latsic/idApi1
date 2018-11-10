@@ -15,6 +15,7 @@ namespace Latsic.IdApi1.Controllers
 {
   [Route("[controller]/[action]")]
   [ApiController]
+  [Authorize(Policy = "ApiAccess")]
   public class TestController : ControllerBase
   {
     private readonly ApiSettings _apiSettings;
@@ -58,7 +59,7 @@ namespace Latsic.IdApi1.Controllers
       return Ok(new Info
       {
         AccessRequirement = $"Access Token from Authority at {_apiSettings.AuthAuthorityUrl}",
-        ClaimsNeeded = $"{JwtClaimTypes.BirthDate} and calculated age >= 16"
+        ClaimsNeeded = $"ApiAcess, {JwtClaimTypes.BirthDate} and calculated age >= 16"
       });
     }
 
@@ -71,7 +72,7 @@ namespace Latsic.IdApi1.Controllers
       return Ok(new Info
       {
         AccessRequirement = $"Access Token from Authority at {_apiSettings.AuthAuthorityUrl}",
-        ClaimsNeeded = $"{JwtClaimTypes.BirthDate} and calculated age >= 18"
+        ClaimsNeeded = $"ApiAcess, {JwtClaimTypes.BirthDate} and calculated age >= 18"
       });
     }
 
@@ -84,7 +85,7 @@ namespace Latsic.IdApi1.Controllers
       return Ok(new Info
       {
         AccessRequirement = $"Access Token from Authority at {_apiSettings.AuthAuthorityUrl}",
-        ClaimsNeeded = $"{JwtClaimTypes.BirthDate} and calculated age >= 21"
+        ClaimsNeeded = $"ApiAcess, {JwtClaimTypes.BirthDate} and calculated age >= 21"
       });
     }
 
@@ -97,7 +98,7 @@ namespace Latsic.IdApi1.Controllers
       return Ok(new Info
       {
         AccessRequirement = $"Access Token from Authority at {_apiSettings.AuthAuthorityUrl}",
-        ClaimsNeeded = $"{ClaimTypes.Role} with a value of Admin"
+        ClaimsNeeded = $"ApiAcess, {ClaimTypes.Role} with a value of Admin"
       });
     }
 
@@ -111,7 +112,7 @@ namespace Latsic.IdApi1.Controllers
       return Ok(new Info
       {
         AccessRequirement = $"Access Token from Authority at {_apiSettings.AuthAuthorityUrl}",
-        ClaimsNeeded = $"{JwtClaimTypes.BirthDate} and calculated age >= 21 " +
+        ClaimsNeeded = $"ApiAcess, {JwtClaimTypes.BirthDate} and calculated age >= 21 " +
           $"and {ClaimTypes.Role} with a value of Admin"
       });
     }
@@ -124,7 +125,7 @@ namespace Latsic.IdApi1.Controllers
       return Ok(new Info
       {
         AccessRequirement = $"Access Token from Authority at {_apiSettings.AuthAuthorityUrl}",
-        ClaimsNeeded = $"UserNumber with a value >= 20"
+        ClaimsNeeded = $"ApiAcess, UserNumber with a value >= 20"
       });
     }
 
@@ -137,7 +138,7 @@ namespace Latsic.IdApi1.Controllers
       return Ok(new Info
       {
         AccessRequirement = $"Access Token from Authority at {_apiSettings.AuthAuthorityUrl}",
-        ClaimsNeeded = $"{JwtClaimTypes.BirthDate} and calculated age >= 20 " +
+        ClaimsNeeded = $"ApiAcess, {JwtClaimTypes.BirthDate} and calculated age >= 20 " +
           $" and a UserNumber >= 20"
       });
     }
