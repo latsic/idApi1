@@ -82,7 +82,6 @@ startProcess() {
   local processFolderPath=$1
   local processName=$2 
 
-  echo "aha $processFolderPath"
 
   cd $processFolderPath
   nohup dotnet $processFolderPath$processName >  $processFolderPath$processName.log 2>&1 & 
