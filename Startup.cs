@@ -43,18 +43,8 @@ namespace IdApi1
     {
       services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-      // Register the Swagger services
       services.AddSwagger();
 
-      services.AddAuthorization(options =>
-      {
-        options.AddPolicy("UserNumberAtLeast20", policy => policy.Requirements.Add(new MinUserNumberRequirement(20)));
-        options.AddPolicy("AgeAtLeast16", policy => policy.Requirements.Add(new MinAgeRequirement(16)));
-        options.AddPolicy("AgeAtLeast18", policy => policy.Requirements.Add(new MinAgeRequirement(18)));
-        options.AddPolicy("AgeAtLeast21", policy => policy.Requirements.Add(new MinAgeRequirement(21)));
-        options.AddPolicy("Admin", policy => policy.RequireClaim(JwtClaimTypes.Role, new string[] {"admin", "Admin", "ADMIN"}));
-        options.AddPolicy("ApiAccess", policy => policy.RequireClaim("ApiAccess", "IdApi1"));
-      });
       services.AddSingleton<IAuthorizationHandler, MinUserNumberHandler>();
       services.AddSingleton<IAuthorizationHandler, MinAgeHandler>();
 
@@ -67,6 +57,17 @@ namespace IdApi1
 
       var tokenValidationConfig = new TokenValidationConfig(); 
       services.AddSingleton<ITokenValidationConfig>(tokenValidationConfig);
+
+      services.AddAuthorization(options =>
+      {
+        options.AddPolicy("UserNumberAtLeast20", policy => policy.Requirements.Add(new MinUserNumberRequirement(20)));
+        options.AddPolicy("AgeAtLeast16", policy => policy.Requirements.Add(new MinAgeRequirement(16)));
+        options.AddPolicy("AgeAtLeast18", policy => policy.Requirements.Add(new MinAgeRequirement(18)));
+        options.AddPolicy("AgeAtLeast21", policy => policy.Requirements.Add(new MinAgeRequirement(21)));
+        options.AddPolicy("Admin", policy => policy.RequireClaim(JwtClaimTypes.Role, new string[] {"admin", "Admin", "ADMIN"}));
+        options.AddPolicy("ApiAccess", policy => policy.RequireClaim("ApiAccess", apiSettings.ApiName));
+      });
+      
 
       services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
       .AddIdentityServerAuthentication(options =>
@@ -84,7 +85,7 @@ namespace IdApi1
         });
       });
 
-      // Store the tokenvalidation parameters so the can be changed during runtime.
+      // Store the tokenvalidation parameters so they can be changed during runtime.
       services.PostConfigure<JwtBearerOptions>(
         IdentityServerAuthenticationDefaults.AuthenticationScheme +
         "IdentityServerAuthenticationJwt", // IdentityServerAuthenticationDefaults.JwtAuthenticationScheme
@@ -108,6 +109,7 @@ namespace IdApi1
       }
       else if(!deployEnv.Value.ReverseProxy && env.IsProduction())
       {
+        app.UseHttpsRedirection();
         app.UseHsts();
       }
 
@@ -130,10 +132,7 @@ namespace IdApi1
 
       app.UseCors("default");
       app.UseAuthentication();
-      if(!deployEnv.Value.ReverseProxy && env.IsProduction())
-      {
-        app.UseHttpsRedirection();
-      }
+     
       // Register the Swagger generator and the Swagger UI middlewares
       app.UseSwaggerUi3WithApiExplorer(settings =>
       {
@@ -142,16 +141,13 @@ namespace IdApi1
         
         if(env.IsProduction())
         {
-          settings.PostProcess = document => document.BasePath = "/idapi1/";
+          settings.PostProcess = document => document.BasePath = deployEnv.Value.BasePath + "/";
         }
         settings.GeneratorSettings.Title = "Authorization Test Endpoints";
         settings.GeneratorSettings.Description = "An API to test authorization with Identity Server 4";
       });
 
-      app.UseMvc(routes =>
-      {
-        routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-      });
+      app.UseMvc();
     }
   }
 }

@@ -25,7 +25,7 @@ namespace Latsic.IdApi1.Controllers
       _apiSettings = apiSettings.Value;
     }
 
-    // GET api/values
+    
     [HttpGet]
     [ProducesResponseType(200)]
     [AllowAnonymous]
@@ -37,7 +37,7 @@ namespace Latsic.IdApi1.Controllers
         ClaimsNeeded = "none"
       });
     }
-    // GET api/values
+   
     [HttpGet]
     [ProducesResponseType(200)]
     [Authorize]
@@ -50,7 +50,6 @@ namespace Latsic.IdApi1.Controllers
       });
     }
 
-    // GET api/values/5
     [HttpGet]
     [ProducesResponseType(200)]
     [Authorize(Policy = "AgeAtLeast16")]
@@ -63,7 +62,6 @@ namespace Latsic.IdApi1.Controllers
       });
     }
 
-    // GET api/values/5
     [HttpGet]
     [ProducesResponseType(200)]
     [Authorize(Policy = "AgeAtLeast18")]
@@ -76,7 +74,6 @@ namespace Latsic.IdApi1.Controllers
       });
     }
 
-    // GET api/values/5
     [HttpGet]
     [ProducesResponseType(200)]
     [Authorize(Policy = "AgeAtLeast21")]
@@ -89,7 +86,6 @@ namespace Latsic.IdApi1.Controllers
       });
     }
 
-    // GET api/values/5
     [HttpGet]
     [ProducesResponseType(200)]
     [Authorize(Policy = "Admin")]
@@ -102,7 +98,6 @@ namespace Latsic.IdApi1.Controllers
       });
     }
 
-    // GET api/values/5
     [HttpGet]
     [ProducesResponseType(200)]
     [Authorize(Policy = "Admin")]
